@@ -1,0 +1,62 @@
+BACK END
+
+      Dependecies
+
+($ npm  i) express cors dotenv mongodb mongoose
+express-oauth2-jwt-bearer
+jsonwebtoken
+$ npm i express-validator
+
+    --Dev dependencies:
+
+($ npm i) ts-node typescript nodemon @types/express @types/cors @types/node --save-dev
+
+nodemon: allow us to automatically restart the server every time we save changes.
+ts-node: typescript for node
+@types/: types for packages
+
+In package.json, change "main": "index.js" for
+  "main": "./src/index.ts",
+  and add "type":"module"
+
+in console tipe:
+"npx tsc --init"
+to create the "tsconfig.json" file
+
+  Configure the mongodb databse
+
+  
+
+
+
+Crear api en auth0 y se nos dara un codigo, copiamos solo esta parte:
+
+const jwtCheck = auth({
+  audience: 'Mern-food-ordering-app-api',
+  issuerBaseURL: 'URL'*,
+  tokenSigningAlg: 'RS256'
+});
+
+*La url la guardamos en .env como 
+AUTH0_AUDICENTE="URL"
+
+creamos una carpeta "middleware", un archivo "auth.ts" y pegamos el codigo archivo
+
+instalamos oauth2
+
+npm i express-oauth2-jwt-bearer
+
+This will check the authorization header for the bearer token that comes from the frontend
+
+now we use it as middleware in our routes:
+"router.post("/", jwtCheck, MyUserController.createCurrentUser);"
+
+
+remember to add this to the FRONTEND dev:
+VITE_AUTH0_AUDIENCE=mern-food-ordering-app-api
+
+
+
+jsonwebtoken: lo usamos para decodificar la informacion que viene del frontend
+
+express-validator:express-validator is a set of express.js middlewares that wraps the extensive collection of validators and sanitizers offered by validator.js.

@@ -1,0 +1,131 @@
+FRONT END
+
+ Dependencies
+
+ react-router-dom
+
+ lucide-react
+ 
+ zod
+ 
+ react-query:React Query is a JavaScript library designed to simplify the complex task of data fetching and caching in React applications. It offers a set of hooks and utilities that enable you to manage data from various sources, including REST APIs, GraphQL, or even local state, effortlessly.
+
+     shadcn:
+ -npm install -D "compilerOptions": {
+    // ...
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }}tailwindcss postcss autoprefixer
+ -npx tailwindcss init -p
+ 
+  Add this code to the tsconfing.json file:
+  
+
+ Replace viteconfig with this:
+
+import path from "path"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+})
+
+(install -npm i -D @types/node- to avoid "path" error)
+
+At last,Run the CLI:
+-npx shadcn-ui@latest init
+And choose the options for you
+
+SHADCDN COMPONENTS
+sheet: npx shadcn-ui@latest add sheet
+separator: npx shadcn-ui@latest add separator
+dropdown-menu: $ npx shadcn-ui@latest add dropdown-menu
+$ npx shadcn-ui@latest add form (react-hook-form)
+$ npx shadcn-ui@latest add input (for the forms)
+   AUTH0
+Configurar auth0 para react.
+Crear single web applications
+
+instalar en vscode:
+
+npm i @auth0/auth0-react
+
+creamos carpeta  auth en src, agregamos archivo
+Auth0ProviderWithNavigate.tsx y aqui creamos el codigo
+que utiliazra el SDK para conectar a auth0
+
+Creamos archivo .env en el frontend (raiz) para guardar 
+ los valores de auth0 (los encontramos en settings en nuestra app de auth0)
+
+ Envolvemos nuestro AppRoutes en 
+ <Auth0ProviderWithNavigate>
+<App>
+ </Auth0ProviderWithNavigate>
+
+add loginWithRedirect to the sign in(in this case, it is at the MainNav component)
+
+    REACT-QUERY
+After installation 
+npm i react-query
+
+Go to the main.tsx file and import
+import { QueryClient } from 'react-query'
+
+then add this const:
+
+const queryClient = new QueryClient({
+  defaultOptions:{
+    queries:{
+      refetchOnWindowFocus: false *
+    }
+  }
+})
+
+*refetchOnWindowFocus: false ==> Turn this option false only for development mode
+
+wrap your routes with
+<QueryClientProvider client={queryClient}></QueryClientProvider>
+
+
+
+
+Create an api folder inside the src folder
+This will be for the hooks that will interact with the backend
+
+
+----
+add  to .env
+VITE_AUTH0_AUDIENCE=mern-food-ordering-app-api
+for extra security, backend api only accpet acces token to this audience, so we configure this audicnete in the frontend token
+
+in our Auth0ProviderWithNavigate file, lets create a const for the audience, and add it to the provider:
+
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE,
+
+   <Auth0Provider domain={domain} clientId={clientId} authorizationParams={{
+            redirect_uri: redirectUri,
+            audience
+        }}
+            onRedirectCallback={onRedirectCallback}>
+            {children}
+        </Auth0Provider>
+ 
+ 
+
+ En la carpeta api de nuestro frontend, crearemos las peticiones al backend,
+ SI TENEMOS peticiones a "users" podemos crear un archivo "myUsersApi.tsx" y dentro de el
+ configurar las peticions en base al controller de users en el backend
+ crearemos una const por cada controllador que provea el back
+
+
+ Crear un archivo types.tsx donde pondremos las mismas propiedades de nuestros
+ schemas en el backend
